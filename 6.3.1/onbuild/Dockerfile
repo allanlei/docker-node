@@ -22,8 +22,8 @@ RUN             apk --no-cache add --virtual .build-deps \
                 rm -rf /opt/src && \
                 apk --no-cache add --virtual .run-deps \
                     libstdc++ && \
-                apk del .build-deps && \
-                npm install -g npm@$NPM_VERSION
+                apk del .build-deps
+RUN             npm install -g npm@$NPM_VERSION
 
 WORKDIR         /usr/src/app
 
