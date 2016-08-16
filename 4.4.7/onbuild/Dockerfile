@@ -2,7 +2,6 @@ FROM            alpine:3.4
 
 ENV             NPM_CONFIG_LOGLEVEL=info
 ENV             NODE_VERSION=4.4.7
-ENV             NPM_VERSION=3
 
 RUN             apk --no-cache add --virtual .build-deps \
                     build-base \
@@ -23,7 +22,6 @@ RUN             apk --no-cache add --virtual .build-deps \
                 apk --no-cache add --virtual .run-deps \
                     libstdc++ && \
                 apk del .build-deps
-RUN             npm install -g npm@$NPM_VERSION
 
 WORKDIR         /usr/src/app
 
