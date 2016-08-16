@@ -3,7 +3,7 @@ FROM            alpine:3.4
 ENV             NPM_CONFIG_LOGLEVEL=info
 ENV             NODE_VERSION=6.3.1
 
-RUN             apk --no-cache add --virtual .build-deps \
+RUN             apk --no-cache add --virtual .node-build-deps \
                     build-base \
                     curl \
                     linux-headers \
@@ -19,14 +19,18 @@ RUN             apk --no-cache add --virtual .build-deps \
                 make install && \
                 paxctl -cm /usr/local/bin/node && \
                 rm -rf /opt/src && \
-                apk --no-cache add --virtual .run-deps \
+                apk --no-cache add --virtual .node-run-deps \
                     libstdc++ && \
-                apk del .build-deps
+                apk del .node-build-deps
 
 WORKDIR         /usr/src/app
 
 ONBUILD COPY    package.json /usr/src/app/
-ONBUILD RUN     npm install
+ONBUILD RUN     apk --no-cache add --virtual .build-deps \
+                    build-base \
+                    python && \
+                npm install && \
+                apk --no-cache del .build-deps
 ONBUILD COPY    . /usr/src/app
 
 CMD             [ "npm", "start" ]
