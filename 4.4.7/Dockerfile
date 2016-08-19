@@ -3,7 +3,7 @@ FROM            alpine:3.4
 ENV             NPM_CONFIG_LOGLEVEL=info
 ENV             NODE_VERSION=4.4.7
 
-RUN             apk --no-cache add --virtual .build-deps \
+RUN             apk --no-cache add --virtual .node-build-deps \
                     build-base \
                     curl \
                     linux-headers \
@@ -19,8 +19,10 @@ RUN             apk --no-cache add --virtual .build-deps \
                 make install && \
                 paxctl -cm /usr/local/bin/node && \
                 rm -rf /opt/src && \
-                apk --no-cache add --virtual .run-deps \
+                apk --no-cache add --virtual .node-run-deps \
                     libstdc++ && \
-                apk del .build-deps
+                apk del .node-build-deps
 
-CMD         ["node"]
+WORKDIR         /usr/src/app
+
+CMD             [ "node" ]
