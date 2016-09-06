@@ -11,18 +11,15 @@ RUN             apk --no-cache add --virtual .node-build-deps \
                     binutils-gold \
                     paxctl \
                     python && \
-                mkdir -p /opt/src && \
-                curl -sL https://github.com/nodejs/node/archive/v$NODE_VERSION.tar.gz | tar xz -C /opt/src && \
-                cd /opt/src/node-$NODE_VERSION && \
+                curl -sL https://github.com/nodejs/node/archive/v$NODE_VERSION.tar.gz | tar xz -C /tmp && \
+                cd /tmp/node-$NODE_VERSION && \
                 ./configure --prefix=/usr/local && \
-                make -j$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
+                make && \
                 make install && \
                 paxctl -cm /usr/local/bin/node && \
-                rm -rf /opt/src && \
+                rm -rf /tmp/* && \
                 apk --no-cache add --virtual .node-run-deps \
                     libstdc++ && \
                 apk del .node-build-deps
-
-WORKDIR         /usr/src/app
 
 CMD             [ "node" ]
