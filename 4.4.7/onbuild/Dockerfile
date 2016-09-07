@@ -1,4 +1,4 @@
-FROM            allanlei/4.4.7
+FROM            allanlei/node:4.4.7
 
 WORKDIR         /usr/src/app
 
